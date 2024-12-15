@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, track } from 'lwc';
 import fetchLineItems from '@salesforce/apex/CreateInvoiceController.fetchLineItems';
 
 export default class CreateInvoice extends LightningElement {
@@ -8,7 +8,7 @@ export default class CreateInvoice extends LightningElement {
     {label: 'Value', fieldName: 'value', type: 'text'},
    ];
 
-   lineItems = [];
+   @track lineItems = [];
    lineItemColumns = [
     {label: 'Description', fieldName: 'description', type:'text'},
     {label: 'Quantity', fieldName: 'quantity', type:'number'},
@@ -29,7 +29,7 @@ export default class CreateInvoice extends LightningElement {
        });
 
        this.fetchLineItems(params);
-       console.log(this.lineItems)
+       //console.log(this.lineItems)
    }
 
    fetchLineItems(params){
@@ -48,11 +48,12 @@ export default class CreateInvoice extends LightningElement {
             return;
         }
 
-        const query = `SELECT ${line_item_description}, ${line_item_quantity}, ${line_item_unit_price} FROM ${child_relationship_name} WHERE ${child_relationship_name.substring(0, child_relationship_name.length - 8)}Id = \'${origin_record}\'`;
+        const query = `SELECT ${line_item_description}, 
+                        ${line_item_quantity}, ${line_item_unit_price} FROM ${child_relationship_name} WHERE ${child_relationship_name.substring(0, child_relationship_name.length - 8)}Id = \'${origin_record}\'`;
 
         fetchLineItems({query})
             .then((results) => {
-                console.log(results);
+                //console.log('Result : ',results);
                 if(results.length > 0){
                     this.lineItems = results.map((item) => ({
                             description: item[line_item_description],
