@@ -1,10 +1,10 @@
 public with sharing class CreateInvoiceController {
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<SObject> fetchLineItems(String query){
         try{
-            System.debug('Line Items fetching');
-            System.debug(query);
+            //System.debug('Line Items fetching');
+            //System.debug('Query : ' + query);
             return Database.query(query);
         }
         catch (Exception e){
